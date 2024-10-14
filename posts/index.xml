@@ -1,17 +1,80 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on Ice's Wonder</title><link>https://student-ice.github.io/posts/</link><description>Recent content in Posts on Ice's Wonder</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 19 Sep 2023 17:09:20 +0800</lastBuildDate><atom:link href="https://student-ice.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>QtQuick的Image组件内存优化</title><link>https://student-ice.github.io/posts/qtquick%E7%9A%84image%E7%BB%84%E4%BB%B6%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/</link><pubDate>Tue, 19 Sep 2023 17:09:20 +0800</pubDate><guid>https://student-ice.github.io/posts/qtquick%E7%9A%84image%E7%BB%84%E4%BB%B6%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/</guid><description>最近做了一个音乐播放器，使用了QtQuick技术，里面大量使用Image组件显示网络图片，而且图片的尺寸都还很大（大部分尺寸都是1000×1000像素以上）。在运行后发现内存占用很大。仅首页图片加载完内存就占用了500MB,而且我还是多页面叠加显示的，再打开几个新页面，内存占用轻轻松松突破1G。
-这肯定是不行的，必须要想办法减少图片的内存占用。然后就去网上搜索了一番，看到了QML的图片加载，内存优化研究这篇文章，里面提到给Image设置souceSize属性可以减少内存占用。 于是我就去查阅了一下官方文档
-This property holds the scaled width and height of the full-frame image. Unlike the width and height properties, which scale the painting of the image, this property sets the maximum number of pixels stored for the loaded image so that large images do not use more memory than necessary. For example, this ensures the image in memory is no larger than 1024x1024 pixels, regardless of the Image&amp;#39;s width and height values: Rectangle { width: .</description></item><item><title>浅尝openapi Generator</title><link>https://student-ice.github.io/posts/%E6%B5%85%E5%B0%9Dopenapi-generator/</link><pubDate>Wed, 13 Sep 2023 13:38:13 +0800</pubDate><guid>https://student-ice.github.io/posts/%E6%B5%85%E5%B0%9Dopenapi-generator/</guid><description>最近看到深度之家项目使用openapi-generator生成http api, 供客户端调用，于是很好奇这是什么，经过了一番研究，才发现他其实就是可以根据OpenAPI规范（以前称为Swagger规范）生成各种编程语言的HTTP API客户端、服务器端代码和文档的一个工具。
-我正好最近在用Qt开发一个网易云音乐客户端，所以就想着能不能也想深度之家那样用openapi-generator生成HTTP API。 说干就干，首先去看了看官方文档，写的很详细了。使用方法有很多，我这里使用npm安装CLI,直接执行下面的命令，全局安装：
-sudo npm install @openapitools/openapi-generator-cli -g 然后根据符合OpenAPI规范的、有效的API文档生成客户端代码:
-openapi-generator-cli generate \ -i doc_path \ # 符合OpenAPI规范的API文档(json格式或者yaml格式) -o code_path \ # 要生成的客户端代码路径 -g cpp-qt-client \ # 使用指定的生成器生成代码。 --additional-properties=&amp;#34;optionalProjectFile=false,modelNamePrefix=D,packageName=QtDAPI,cppNamespace=DAPI&amp;#34; # 额外的参数 额外参数的含义可以到官方文档/generators/cpp-qt-client查看。
-执行这个命令后就可以在指定的目录下看到生成的代码。
-$ tree 3rdparty/client 3rdparty/API ├── README.md └── Config.cmake.in └── CMakeLists.txt └── DClientApi.h └── DClientApi.cpp ......... 然后在代码中就可以调用了，使用方法可以参考生成的README.md</description></item><item><title>Hugo搭建个人博客网站</title><link>https://student-ice.github.io/posts/hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/</link><pubDate>Fri, 08 Sep 2023 08:57:38 +0800</pubDate><guid>https://student-ice.github.io/posts/hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/</guid><description>前言 Hugo 是一款基于 Go 语言而实现的静态网站生成器，具有简单易用、高效易扩展、快速部署的特点。 这里先给出 Hugo 的中英文官方文档，方便大家遇到问题时查阅：
-Hugo 中文文档 Hugo 英文文档
-接下来就来看看，如何利用 Hugo 来搭建一个博客。
-1. 安装Hugo 当你打开Hugo的Github Release页面后，你会看到各个版本的Hugo安装包。选择最新的版本是一个明智的选择，因为它通常包含了最新的功能和修复的bug。
-在选择版本后，你需要根据你当前的操作系统选择对应的安装包进行下载。Hugo提供了多种操作系统的安装包，包括Windows、macOS和Linux。确保选择与你的操作系统兼容的安装包。
-安装完成后，你可以在命令行中输入hugo version来验证Hugo是否成功安装并显示当前安装的版本号。如果成功显示版本号，则说明Hugo已经安装成功。
-$ hugo version hugo v0.118.2-da7983ac4b94d97d776d7c2405040de97e95c03d linux/amd64 BuildDate=2023-08-31T11:23:51Z VendorInfo=gohugoio 现在你已经成功安装了Hugo，你可以开始使用它来创建和管理静态网站了。
-2. 创建博客目录 初始化网站目录 $ hugo new site blog 初始化之后，得到的，目录结构如下:
-$ tree blog blog ├── archetypes │ └── default.md ├── assets ├── content ├── data ├── hugo.toml ├── i18n ├── layouts ├── static └── themes 这里需要注意的是hugo.toml,这个配置文件是用来配置Hugo的一些全局参数的。这个文件默认有以下三个配置:
-baseURL = &amp;#39;https://example.org/&amp;#39; languageCode = &amp;#39;en-us&amp;#39; title = &amp;#39;My New Hugo Site&amp;#39; 我不太喜欢toml的语法,所以我把它改成了hugo.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on Ice's Wonder</title><link>https://ice909.github.io/posts/</link><description>Recent content in Posts on Ice's Wonder</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 19 Sep 2023 17:09:20 +0800</lastBuildDate><atom:link href="https://ice909.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>QtQuick的Image组件内存优化</title><link>https://ice909.github.io/posts/qtquick%E7%9A%84image%E7%BB%84%E4%BB%B6%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/</link><pubDate>Tue, 19 Sep 2023 17:09:20 +0800</pubDate><guid>https://ice909.github.io/posts/qtquick%E7%9A%84image%E7%BB%84%E4%BB%B6%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/</guid><description>&lt;p>最近做了一个音乐播放器，使用了QtQuick技术，里面大量使用Image组件显示网络图片，而且图片的尺寸都还很大（大部分尺寸都是1000×1000像素以上）。在运行后发现内存占用很大。仅首页图片加载完内存就占用了500MB,而且我还是多页面叠加显示的，再打开几个新页面，内存占用轻轻松松突破1G。&lt;/p>
+&lt;p>&lt;img loading="lazy" src="https://ice909.github.io/images/memory.png" alt="memory" />
+&lt;/p>
+&lt;p>这肯定是不行的，必须要想办法减少图片的内存占用。然后就去网上搜索了一番，看到了&lt;a href="https://blog.csdn.net/weixin_39039435/article/details/125832449">QML的图片加载，内存优化研究&lt;/a>这篇文章，里面提到给Image设置souceSize属性可以减少内存占用。
+于是我就去查阅了一下官方文档&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-text" data-lang="text">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">This property holds the scaled width and height of the full-frame image.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Unlike the width and height properties, which scale the painting of the image,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">this property sets the maximum number of pixels stored for the loaded image
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">so that large images do not use more memory than necessary.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">For example, this ensures the image in memory is no larger than 1024x1024 pixels,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">regardless of the Image&amp;#39;s width and height values:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Rectangle {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> width: ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> height: ...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Image {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> anchors.fill: parent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> source: &amp;#34;reallyBigImage.jpg&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sourceSize.width: 1024
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sourceSize.height: 1024
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>然后就尝试给Image设置sourceSize为400x400,再次启动程序，发现内存占用骤减，首页占用内存已经降低79.3MB&lt;/p></description></item><item><title>浅尝openapi Generator</title><link>https://ice909.github.io/posts/%E6%B5%85%E5%B0%9Dopenapi-generator/</link><pubDate>Wed, 13 Sep 2023 13:38:13 +0800</pubDate><guid>https://ice909.github.io/posts/%E6%B5%85%E5%B0%9Dopenapi-generator/</guid><description>&lt;p>最近看到&lt;a href="https://github.com/linuxdeepin/deepin-home">深度之家&lt;/a>项目使用openapi-generator生成http api,
+供客户端调用，于是很好奇这是什么，经过了一番研究，才发现他其实就是可以根据OpenAPI规范（以前称为Swagger规范）生成各种编程语言的HTTP API客户端、服务器端代码和文档的一个工具。&lt;/p>
+&lt;p>我正好最近在用Qt开发一个网易云音乐客户端，所以就想着能不能也想深度之家那样用openapi-generator生成HTTP API。
+说干就干，首先去看了看&lt;a href="https://openapi-generator.tech/docs/installation">官方文档&lt;/a>，写的很详细了。使用方法有很多，我这里使用npm安装CLI,直接执行下面的命令，全局安装：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo npm install @openapitools/openapi-generator-cli -g
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>然后根据符合OpenAPI规范的、有效的API文档生成客户端代码:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">openapi-generator-cli generate &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -i doc_path &lt;span class="se">\ &lt;/span> &lt;span class="c1"># 符合OpenAPI规范的API文档(json格式或者yaml格式)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -o code_path &lt;span class="se">\ &lt;/span> &lt;span class="c1"># 要生成的客户端代码路径&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -g cpp-qt-client &lt;span class="se">\ &lt;/span> &lt;span class="c1"># 使用指定的生成器生成代码。&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> --additional-properties&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;optionalProjectFile=false,modelNamePrefix=D,packageName=QtDAPI,cppNamespace=DAPI&amp;#34;&lt;/span> &lt;span class="c1"># 额外的参数&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>额外参数的含义可以到&lt;a href="https://openapi-generator.tech/docs/generators/cpp-qt-client">官方文档/generators/cpp-qt-client&lt;/a>查看。&lt;/p>
+&lt;p>执行这个命令后就可以在指定的目录下看到生成的代码。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">$ tree 3rdparty/client
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">3rdparty/API
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── README.md
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── Config.cmake.in
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── CMakeLists.txt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── DClientApi.h
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── DClientApi.cpp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">.........
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>然后在代码中就可以调用了，使用方法可以参考生成的README.md&lt;/p></description></item><item><title>Hugo搭建个人博客网站</title><link>https://ice909.github.io/posts/hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/</link><pubDate>Fri, 08 Sep 2023 08:57:38 +0800</pubDate><guid>https://ice909.github.io/posts/hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>Hugo 是一款基于 Go 语言而实现的静态网站生成器，具有简单易用、高效易扩展、快速部署的特点。
+这里先给出 Hugo 的中英文官方文档，方便大家遇到问题时查阅：&lt;/p>
+&lt;p>&lt;a href="https://www.gohugo.org/doc/">Hugo 中文文档&lt;/a>
+&lt;a href="https://gohugo.io/documentation/">Hugo 英文文档&lt;/a>&lt;/p>
+&lt;p>接下来就来看看，如何利用 Hugo 来搭建一个博客。&lt;/p>
+&lt;h2 id="1-安装hugo">1. 安装Hugo&lt;/h2>
+&lt;p>当你打开Hugo的&lt;a href="https://github.com/gohugoio/hugo/releases/">Github Release&lt;/a>页面后，你会看到各个版本的Hugo安装包。选择最新的版本是一个明智的选择，因为它通常包含了最新的功能和修复的bug。&lt;/p>
+&lt;p>在选择版本后，你需要根据你当前的操作系统选择对应的安装包进行下载。Hugo提供了多种操作系统的安装包，包括Windows、macOS和Linux。确保选择与你的操作系统兼容的安装包。&lt;/p>
+&lt;p>安装完成后，你可以在命令行中输入hugo version来验证Hugo是否成功安装并显示当前安装的版本号。如果成功显示版本号，则说明Hugo已经安装成功。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">$ hugo version
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hugo v0.118.2-da7983ac4b94d97d776d7c2405040de97e95c03d linux/amd64 &lt;span class="nv">BuildDate&lt;/span>&lt;span class="o">=&lt;/span>2023-08-31T11:23:51Z &lt;span class="nv">VendorInfo&lt;/span>&lt;span class="o">=&lt;/span>gohugoio
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>现在你已经成功安装了Hugo，你可以开始使用它来创建和管理静态网站了。&lt;/p>
+&lt;h2 id="2-创建博客目录">2. 创建博客目录&lt;/h2>
+&lt;p>初始化网站目录
+$ hugo new site blog
+初始化之后，得到的，目录结构如下:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">$ tree blog
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">blog
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── archetypes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── default.md
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── assets
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── content
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── data
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── hugo.toml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── i18n
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── layouts
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── static
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── themes
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这里需要注意的是hugo.toml,这个配置文件是用来配置Hugo的一些全局参数的。这个文件默认有以下三个配置:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">baseURL&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;https://example.org/&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">languageCode&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;en-us&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">title&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;My New Hugo Site&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>我不太喜欢toml的语法,所以我把它改成了hugo.yaml。&lt;/p></description></item></channel></rss>
